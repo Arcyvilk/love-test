@@ -1,9 +1,9 @@
 local vars = require 'vars'
 
-local ball = require 'entities/ball'
-local boundary = require 'entities/boundary'
-local brick = require 'entities/brick'
-local paddle = require 'entities/paddle'
+local ball = require 'entities.ball'
+local boundary = require 'entities.boundary'
+local brick = require 'entities.brick'
+local paddle = require 'entities.paddle'
 
 -- Take the brick amount and divide them into rows and columns
 -- based on the world size.
