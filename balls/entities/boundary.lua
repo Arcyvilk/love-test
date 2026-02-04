@@ -2,7 +2,7 @@ local world = require 'world'
 local vars  = require 'vars'
 
 local body  = {
-  top = love.physics.newBody(world, vars.world_width / 2, vars.boundary_width / 2, 'static'),
+  top = love.physics.newBody(world, vars.world_width / 2, vars.boundary_offset_top, 'static'),
   bottom = love.physics.newBody(world, vars.world_width / 2, vars.world_height - vars.boundary_width / 2, 'static'),
   left = love.physics.newBody(world, vars.boundary_width / 2, vars.world_height / 2, 'static'),
   right = love.physics.newBody(world, vars.world_width - vars.boundary_width / 2, vars.world_height / 2, 'static')
