@@ -2,6 +2,7 @@ local world           = require 'world'
 local input           = require 'input'
 local entities        = require 'entities.entities'
 local player          = require 'entities.player'
+local health          = require 'ui.health'
 
 local draw_boundaries = function()
   for _, entity in ipairs(entities.boundaries) do
@@ -25,6 +26,7 @@ end
 
 love.draw             = function()
   player:draw()
+  health.draw()
   draw_boundaries()
   draw_spawners()
 end
