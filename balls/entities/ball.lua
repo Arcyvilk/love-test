@@ -21,7 +21,9 @@ return function(x_pos, y_pos)
 
   entity.draw = function(self)
     local x_self, y_self = self.body:getWorldCenter()
+    love.graphics.setColor(110 / 255, 110 / 255, 240 / 255)
     love.graphics.circle('fill', x_self, y_self, self.shape:getRadius())
+    love.graphics.setColor(1, 1, 1)
   end
 
   return entity
