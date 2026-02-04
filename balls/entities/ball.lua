@@ -7,16 +7,17 @@ return function(x_pos, y_pos)
   local entity = {}
 
   entity.body = love.physics.newBody(world, x_pos, y_pos, 'dynamic')
-  entity.body:setMass(20)
-  entity.body:setLinearVelocity(0, 0)
-
   entity.shape = love.physics.newCircleShape(vars.ball_radius)
-
   entity.fixture = love.physics.newFixture(entity.body, entity.shape)
   entity.fixture:setRestitution(1)
   entity.fixture:setUserData(entity)
 
-  entity.id = 1
+  local bx, by = entity.body:getPosition()
+  local dx = vars.world_width / 2 - bx
+  local dy = vars.world_height / 2 - by
+
+  entity.body:setMass(20)
+  entity.body:setLinearVelocity(dx, dy)
 
   entity.draw = function(self)
     local x_self, y_self = self.body:getWorldCenter()
