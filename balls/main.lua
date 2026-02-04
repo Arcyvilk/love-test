@@ -1,32 +1,37 @@
-local world = require 'world'
-local input = require 'input'
-local ball = require 'entities.ball'
-local spawner, spawned_entities = unpack(require 'entities.spawner')
+local world           = require 'world'
+local input           = require 'input'
+local entities        = require 'entities.entities'
 
-local spawners = {
-  spawner(10, 10, ball),
-  spawner(390, 10, ball)
-}
-
-love.draw = function()
-  for _, entity_spawner in ipairs(spawners) do
-    if entity_spawner.draw then
-      entity_spawner:draw()
-    end
+local draw_boundaries = function()
+  for _, entity in ipairs(entities.boundaries) do
+    if entity.draw then entity:draw() end
   end
+end
 
-  for _, entity_to_spawn in ipairs(spawned_entities) do
-    if entity_to_spawn.draw then
-      entity_to_spawn:draw()
+local draw_spawners   = function()
+  for _, spawner in ipairs(entities.spawners) do
+    if spawner.draw then
+      spawner:draw()
+    end
+
+    for _, entity_to_spawn in ipairs(spawner.entities_to_spawn) do
+      if entity_to_spawn.draw then
+        entity_to_spawn:draw()
+      end
     end
   end
 end
 
+love.draw             = function()
+  draw_boundaries()
+  draw_spawners()
+end
+
 
 love.update = function(dt)
-  for _, entity_spawner in ipairs(spawners) do
-    if entity_spawner.spawn then
-      entity_spawner:spawn()
+  for _, spawner in ipairs(entities.spawners) do
+    if spawner.spawn then
+      spawner:spawn()
     end
   end
 

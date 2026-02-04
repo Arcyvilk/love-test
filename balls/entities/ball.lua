@@ -1,5 +1,5 @@
 local world = require 'world'
-local vars = require 'vars'
+local vars  = require 'vars'
 
 --- @param x_pos number
 --- @param y_pos number
@@ -19,7 +19,7 @@ return function(x_pos, y_pos)
   entity.id = 1
 
   entity.draw = function(self)
-    local x_self, y_self = self.body:getWorldPoint(x_pos, y_pos)
+    local x_self, y_self = self.body:getWorldCenter()
     love.graphics.circle('fill', x_self, y_self, self.shape:getRadius())
   end
 
