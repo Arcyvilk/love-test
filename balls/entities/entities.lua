@@ -11,8 +11,8 @@ local boundaries = {
 }
 
 local spawners   = {
-  spawner(vars.spawner_offset, vars.spawner_offset, ball),
-  spawner(vars.world_width - vars.spawner_offset, vars.spawner_offset, ball)
+  spawner(vars.spawner_offset_x, vars.spawner_offset_y, ball, vars.ball_spawn_delay),
+  spawner(vars.world_width - vars.spawner_offset_x, vars.spawner_offset_y, ball, vars.ball_spawn_delay)
 }
 
 return {
