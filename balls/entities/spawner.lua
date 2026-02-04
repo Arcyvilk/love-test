@@ -1,25 +1,30 @@
 local world = require 'world'
 
-local radius = 2
+local spawned_entities = {}
 
-return function(x_pos, y_pos, entity_to_spawn)
-  local spawner = {
-    entities = {}
+--- @param x_pos number
+--- @param y_pos number
+--- @param entity_to_spawn any
+local spawner = function(x_pos, y_pos, entity_to_spawn)
+  local entity = {
+    radius = 2
   }
 
-  spawner.body = love.physics.newBody(world, x_pos, y_pos, 'static')
-  spawner.shape = love.physics.newCircleShape(radius)
-  spawner.fixture = love.physics.newFixture(spawner.body, spawner.shape)
-  spawner.fixture:setUserData(spawner)
+  entity.body = love.physics.newBody(world, x_pos, y_pos, 'static')
+  entity.shape = love.physics.newCircleShape(entity.radius)
+  entity.fixture = love.physics.newFixture(entity.body, entity.shape)
+  entity.fixture:setUserData(entity)
 
-  spawner.spawn = function(self)
-    table.insert(self.entities, entity_to_spawn)
+  entity.spawn = function()
+    table.insert(spawned_entities, entity_to_spawn(x_pos, y_pos))
   end
 
-  spawner.draw = function(self)
+  entity.draw = function(self)
     local x_self, y_self = self.body:getWorldPoint(x_pos, y_pos)
-    love.graphics.circle('line', x_self, y_self, radius)
+    love.graphics.circle('line', x_self, y_self, self.shape:getRadius())
   end
 
-  return spawner
+  return entity
 end
+
+return { spawner, spawned_entities }
