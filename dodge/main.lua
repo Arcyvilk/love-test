@@ -12,7 +12,6 @@ love.update      = function(dt)
 end
 
 love.keypressed  = function(pressed_key)
-  if pressed_key == 'space' then debug.debug() end
   if input[pressed_key] then
     input[pressed_key]:press()
   end
