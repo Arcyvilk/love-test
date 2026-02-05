@@ -5,10 +5,15 @@ local vars = {
   world_width = 800,
   world_height = 600,
 
-  player_radius_max = 10,
-  player_radius_min = 1,
-  player_speed = 400,
-  player_segments = 10
+  player_radius_min = 10,
+  player_radius_max = 25,
+  player_speed_min = 100,
+  player_speed_max = 8000,
+  player_base_speed = 800,
+  player_segments = 20,
+
+  spawner_offset_x = 20,
+  spawner_offset_y = 20
 }
 
 return vars
