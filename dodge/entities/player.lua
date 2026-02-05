@@ -11,7 +11,7 @@ local create_segment = function(index)
     index = index
   }
 
-  segment.body = love.physics.newBody(world, vars.world_width / 2, vars.world_height / 2, 'dynamic')
+  segment.body = love.physics.newBody(world, vars.world_width / 2, vars.world_height / 2, 'kinematic')
   segment.shape = love.physics.newCircleShape(clamp(vars.player_radius_min, vars.player_radius_max,
     (vars.player_segments - index) / 2))
   segment.fixture = love.physics.newFixture(segment.body, segment.shape)
@@ -31,7 +31,17 @@ local create_segment = function(index)
     end
 
     local vx, vy = normalize(segment.target.x - px, segment.target.y - py)
-    self.body:setLinearVelocity(vx * vars.player_speed * distance_factor_x, vy * vars.player_speed * distance_factor_y)
+    distance_factor_x = math.abs(segment.target.x - px) / 100
+    distance_factor_y = math.abs(segment.target.y - py) / 100
+
+    if is_head then
+      self.body:setLinearVelocity(vx * vars.player_speed * distance_factor_x, vy * vars.player_speed * distance_factor_y)
+    else
+      local x = segment.target.x + (vx * segments[index - 1].shape:getRadius() * 2)
+      local y = segment.target.y + (vy * segments[index - 1].shape:getRadius() * 2)
+      if index == 2 then print(vx) end
+      self.body:setPosition(x, y)
+    end
   end
 
   segment.draw = function(self)

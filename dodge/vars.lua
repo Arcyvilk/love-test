@@ -8,7 +8,7 @@ local vars = {
   player_radius_max = 10,
   player_radius_min = 1,
   player_speed = 400,
-  player_segments = 30
+  player_segments = 10
 }
 
 return vars
