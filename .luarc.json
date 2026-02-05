@@ -1,0 +1,20 @@
+{
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "diagnostics": {
+    "globals": ["love"]
+  },
+  "workspace": {
+    "library": ["${3rd}/love2d/library"],
+    "checkThirdParty": true
+  },
+  "format": {
+    "defaultConfig": {
+      "indent_style": "space",
+      "indent_size": "2",
+      "trailing_table_separator": "never",
+      "align_array_table": "false"
+    }
+  }
+}

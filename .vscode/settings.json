@@ -1,24 +1,4 @@
 {
-  // LUA's "dialect" used by LOVE2D
-  "Lua.runtime.version": "LuaJIT", 
-  "Lua.diagnostics.globals": [
-    // Recognize "love" as a global variable
-      "love", 
-  ],
-  "Lua.workspace.library": [
-    // This is what enables autocomplete!
-      "${3rd}/love2d/library" 
-  ],
-  // Trust 3rd party, including the API definitions above
-  "Lua.workspace.checkThirdParty": true, 
-  // Formatting settings
-  "Lua.format.defaultConfig": {
-    "quote_style": "single",
-    "indent_style": "space",
-    "indent_size": "2",
-    "trailing_table_separator": "never",
-    "align_array_table": "false"
-  },
   // Actually format the code on save
   "[lua]": {
     "editor.defaultFormatter": "sumneko.lua",
