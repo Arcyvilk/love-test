@@ -7,7 +7,12 @@
   },
   "workspace": {
     "library": ["${3rd}/love2d/library"],
-    "checkThirdParty": true
+    "checkThirdParty": true,
+    "ignoreDir": [
+      "balls",
+      "breakout",
+      "dodge"
+    ]
   },
   "format": {
     "defaultConfig": {
