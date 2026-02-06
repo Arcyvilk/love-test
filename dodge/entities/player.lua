@@ -3,7 +3,6 @@ local vars                = require 'vars'
 local normalize           = require 'utils.normalize'
 
 local segment_radius_step = (vars.player_radius_max - vars.player_radius_min) / vars.player_segments
-local segments            = {}
 
 local create_head         = function()
   local head = {}
@@ -30,7 +29,7 @@ local create_head         = function()
 
   head.draw = function(self)
     local x, y = self.body:getPosition()
-    love.graphics.circle('line', x, y, self.shape:getRadius())
+    love.graphics.circle('fill', x, y, self.shape:getRadius())
     love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.line(x, y, target.x, target.y)
     love.graphics.setColor(1, 1, 1, 1)
@@ -40,7 +39,7 @@ local create_head         = function()
 end
 
 --- @param index number
-local create_segment      = function(index)
+local create_segment      = function(index, prev_segment)
   local segment = {}
   local target = {}
 
@@ -52,9 +51,9 @@ local create_segment      = function(index)
   segment.update = function(self, delta)
     local px, py = self.body:getPosition()
 
-    target.x, target.y = segments[index - 1].body:getPosition()
+    target.x, target.y = prev_segment.body:getPosition()
     local vx, vy = normalize(px - target.x, py - target.y)
-    local spacing = segments[index - 1].shape:getRadius() * 2
+    local spacing = prev_segment.shape:getRadius() * 2
     local x = target.x + spacing * vx
     local y = target.y + spacing * vy
 
@@ -73,27 +72,30 @@ local create_segment      = function(index)
 end
 
 local create_player       = function()
-  local player = {}
-  local curr_segment = 1
+  local player = {
+    head = {},
+    segments = {}
+  }
+  local curr_segment_index = 1
 
-  local head = create_head()
-  table.insert(segments, head)
-  curr_segment = curr_segment + 1
+  player.head = create_head()
 
-  while curr_segment <= vars.player_segments do
-    local segment = create_segment(curr_segment)
-    table.insert(segments, segment)
-    curr_segment = curr_segment + 1
+  while curr_segment_index < vars.player_segments do
+    local prev_segment = curr_segment_index == 1 and player.head or player.segments[curr_segment_index - 1]
+    table.insert(player.segments, create_segment(curr_segment_index, prev_segment))
+    curr_segment_index = curr_segment_index + 1
   end
 
-  player.update = function(self, delta)
-    for _, segment in ipairs(segments) do
+  player.update = function(delta)
+    player.head:update(delta)
+    for _, segment in ipairs(player.segments) do
       segment:update(delta)
     end
   end
 
-  player.draw = function(self)
-    for _, segment in ipairs(segments) do
+  player.draw = function()
+    player.head:draw()
+    for _, segment in ipairs(player.segments) do
       segment:draw()
     end
   end
