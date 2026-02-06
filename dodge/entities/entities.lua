@@ -1,18 +1,43 @@
-local vars          = require 'vars'
-local spawner       = require 'entities.spawner'
-local arrow         = require 'entities.arrow'
+local vars            = require 'vars'
+local spawner         = require 'entities.spawner'
+local arrow           = require 'entities.arrow'
 
-local spawners      = {
+local spawners        = {
   spawner(vars.spawner_offset_x, vars.spawner_offset_y, arrow, 1),
-  spawner(vars.world_width - vars.spawner_offset_x, vars.spawner_offset_y, arrow, 1)
+  spawner(vars.world_width - vars.spawner_offset_x, vars.spawner_offset_y, arrow, 1),
+  spawner(vars.spawner_offset_x, vars.world_height - vars.spawner_offset_y, arrow, 1),
+  spawner(vars.world_width - vars.spawner_offset_x, vars.world_height - vars.spawner_offset_y, arrow, 1)
 }
 
-local draw_spawners = function()
+local draw_spawners   = function()
   for _, entity in ipairs(spawners) do
-    entity:draw()
+    if entity.draw then
+      entity:draw()
+    end
+
+    for _, spawned_entity in ipairs(entity.entities_to_spawn) do
+      if spawned_entity.draw then
+        spawned_entity:draw()
+      end
+    end
+  end
+end
+
+local update_spawners = function(dt)
+  for _, entity in ipairs(spawners) do
+    if entity.spawn then
+      entity:spawn(dt)
+    end
+
+    for _, spawned_entity in ipairs(entity.entities_to_spawn) do
+      if spawned_entity.update then
+        spawned_entity:update()
+      end
+    end
   end
 end
 
 return {
-  draw_spawners
+  draw_spawners,
+  update_spawners
 }
