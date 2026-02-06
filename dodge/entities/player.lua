@@ -71,6 +71,7 @@ local create_segment      = function(index, prev_segment)
 
   segment.body = love.physics.newBody(world, vars.world_width / 2, vars.world_height / 2, 'kinematic')
   segment.shape = love.physics.newCircleShape(segment_radius_step * (vars.player_segments - index))
+  segment.fixture = love.physics.newFixture(segment.body, segment.shape)
 
   segment.update = function(self)
     local px, py = self.body:getPosition()

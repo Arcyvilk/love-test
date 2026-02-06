@@ -15,7 +15,8 @@ local vars = {
 
   arrow_height = 50,
   arrow_width = 1,
-  arrow_base_speed = 1000
+  arrow_base_speed = 1000,
+  arrow_spawn_delay = 0.25
 }
 
 return vars
