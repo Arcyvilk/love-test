@@ -13,7 +13,10 @@ local vars = {
   player_segments = 20,
 
   spawner_offset_x = 20,
-  spawner_offset_y = 20
+  spawner_offset_y = 20,
+
+  arrow_height = 50,
+  arrow_width = 1
 }
 
 return vars
