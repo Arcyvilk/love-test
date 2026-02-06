@@ -1,7 +1,12 @@
 local vars = require 'vars'
 
-local center_text = function(text, size)
+---comment
+---@param text string
+---@param size number
+---@param color table
+local center_text = function(text, size, color)
   love.graphics.setNewFont(size)
+  love.graphics.setColor(color[1], color[2], color[3])
 
   local font          = love.graphics.getFont()
 
@@ -17,7 +22,8 @@ local center_text = function(text, size)
     screen_height / 2 - text_height / 2
   )
 
-  love.graphics.setNewFont(12) -- reset font to default
+  love.graphics.setNewFont(12)    -- reset font to default
+  love.graphics.setColor(1, 1, 1) -- reset color to default
 end
 
 return center_text
