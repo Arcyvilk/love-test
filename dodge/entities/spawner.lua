@@ -2,7 +2,7 @@ local world = require 'world'
 
 --- @param x_pos            number
 --- @param y_pos            number
---- @param entity_to_spawn  table
+--- @param entity_to_spawn  function
 --- @param spawn_delay      number
 return function(x_pos, y_pos, entity_to_spawn, spawn_delay)
   local entity = {
