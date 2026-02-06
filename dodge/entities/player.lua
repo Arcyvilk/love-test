@@ -1,59 +1,84 @@
-local world          = require 'world'
-local vars           = require 'vars'
-local normalize      = require 'utils.normalize'
-local clamp          = require 'utils.clamp'
+local world               = require 'world'
+local vars                = require 'vars'
+local normalize           = require 'utils.normalize'
 
-local segments       = {}
+local segment_radius_step = (vars.player_radius_max - vars.player_radius_min) / vars.player_segments
+local segments            = {}
+
+local create_head         = function()
+  local head = {}
+  local target = {}
+
+  head.body = love.physics.newBody(world, vars.world_width / 2, vars.world_height / 2, 'kinematic')
+  head.shape = love.physics.newCircleShape(segment_radius_step * vars.player_segments)
+  head.fixture = love.physics.newFixture(head.body, head.shape)
+
+  --- @param delta number
+  head.update = function(self, delta)
+    local px, py = self.body:getPosition()
+
+    target.x, target.y = love.mouse.getPosition()
+    local vx, vy = normalize(target.x - px, target.y - py)
+    local distance_factor = {
+      x = math.abs(target.x - px) / 100,
+      y = math.abs(target.y - py) / 100
+    }
+    self.body:setLinearVelocity(
+      vx * distance_factor.x * vars.player_base_speed,
+      vy * distance_factor.y * vars.player_base_speed)
+  end
+
+  head.draw = function(self)
+    local x, y = self.body:getPosition()
+    love.graphics.circle('line', x, y, self.shape:getRadius())
+    love.graphics.setColor(1, 1, 1, 0.5)
+    love.graphics.line(x, y, target.x, target.y)
+    love.graphics.setColor(1, 1, 1, 1)
+  end
+
+  return head
+end
 
 --- @param index number
-local create_segment = function(index)
+local create_segment      = function(index)
   local segment = {}
-
-  local segment_radius = (vars.player_radius_max - vars.player_radius_min) / vars.player_segments
+  local target = {}
 
   segment.body = love.physics.newBody(world, vars.world_width / 2, vars.world_height / 2, 'kinematic')
-  segment.shape = love.physics.newCircleShape(segment_radius * (vars.player_segments - index))
+  segment.shape = love.physics.newCircleShape(segment_radius_step * (vars.player_segments - index))
   segment.fixture = love.physics.newFixture(segment.body, segment.shape)
-  segment.fixture:setUserData(segment)
-  segment.target = {}
 
+  --- @param delta number
   segment.update = function(self, delta)
     local px, py = self.body:getPosition()
-    local is_head = index == 1
 
-    if is_head then -- target cursor
-      segment.target.x, segment.target.y = love.mouse.getPosition()
-      local vx, vy = normalize(segment.target.x - px, segment.target.y - py)
-      local distance_factor_x = math.abs(segment.target.x - px) / 100
-      local distance_factor_y = math.abs(segment.target.y - py) / 100
-      self.body:setLinearVelocity(
-        vx * clamp(vars.player_speed_min, vars.player_speed_max, vars.player_base_speed * distance_factor_x),
-        vy * clamp(vars.player_speed_min, vars.player_speed_max, vars.player_base_speed * distance_factor_y))
-    else -- target previous chain segment
-      segment.target.x, segment.target.y = segments[index - 1].body:getPosition()
-      local vx, vy = normalize(px - segment.target.x, py - segment.target.y)
-      local spacing = segments[index - 1].shape:getRadius() * 2
-      local x = segment.target.x + vx * spacing
-      local y = segment.target.y + vy * spacing
+    target.x, target.y = segments[index - 1].body:getPosition()
+    local vx, vy = normalize(px - target.x, py - target.y)
+    local spacing = segments[index - 1].shape:getRadius() * 2
+    local x = target.x + spacing * vx
+    local y = target.y + spacing * vy
 
-      self.body:setPosition(x, y)
-    end
+    self.body:setPosition(x, y)
   end
 
   segment.draw = function(self)
-    local x_self, y_self = self.body:getWorldCenter()
-    love.graphics.circle('line', x_self, y_self, self.shape:getRadius())
+    local x, y = self.body:getWorldCenter()
+    love.graphics.circle('line', x, y, self.shape:getRadius())
     love.graphics.setColor(1, 1, 1, 0.5)
-    love.graphics.line(x_self, y_self, segment.target.x, segment.target.y)
+    love.graphics.line(x, y, target.x, target.y)
     love.graphics.setColor(1, 1, 1, 1)
   end
 
   return segment
 end
 
-local create_player  = function()
+local create_player       = function()
   local player = {}
   local curr_segment = 1
+
+  local head = create_head()
+  table.insert(segments, head)
+  curr_segment = curr_segment + 1
 
   while curr_segment <= vars.player_segments do
     local segment = create_segment(curr_segment)
@@ -76,6 +101,6 @@ local create_player  = function()
   return player
 end
 
-local player         = create_player()
+local player              = create_player()
 
 return player
