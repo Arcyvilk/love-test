@@ -12,8 +12,7 @@ local create_head         = function()
   head.shape = love.physics.newCircleShape(segment_radius_step * vars.player_segments)
   head.fixture = love.physics.newFixture(head.body, head.shape)
 
-  --- @param delta number
-  head.update = function(self, delta)
+  head.update = function(self)
     local px, py = self.body:getPosition()
 
     target.x, target.y = love.mouse.getPosition()
@@ -47,8 +46,7 @@ local create_segment      = function(index, prev_segment)
   segment.shape = love.physics.newCircleShape(segment_radius_step * (vars.player_segments - index))
   segment.fixture = love.physics.newFixture(segment.body, segment.shape)
 
-  --- @param delta number
-  segment.update = function(self, delta)
+  segment.update = function(self)
     local px, py = self.body:getPosition()
 
     target.x, target.y = prev_segment.body:getPosition()
@@ -71,29 +69,37 @@ local create_segment      = function(index, prev_segment)
   return segment
 end
 
-local create_player       = function()
-  local player = {
+
+local create_segments = function(head)
+  local segments = {}
+  local index = 1
+
+  while index < vars.player_segments do
+    local prev_segment = index == 1 and head or segments[index - 1]
+    table.insert(segments, create_segment(index, prev_segment))
+    index = index + 1
+  end
+
+  return segments
+end
+
+local create_player   = function()
+  local player    = {
     head = {},
     segments = {}
   }
-  local curr_segment_index = 1
 
-  player.head = create_head()
+  player.head     = create_head()
+  player.segments = create_segments(player.head)
 
-  while curr_segment_index < vars.player_segments do
-    local prev_segment = curr_segment_index == 1 and player.head or player.segments[curr_segment_index - 1]
-    table.insert(player.segments, create_segment(curr_segment_index, prev_segment))
-    curr_segment_index = curr_segment_index + 1
-  end
-
-  player.update = function(delta)
-    player.head:update(delta)
+  player.update   = function(delta)
+    player.head:update()
     for _, segment in ipairs(player.segments) do
       segment:update(delta)
     end
   end
 
-  player.draw = function()
+  player.draw     = function()
     player.head:draw()
     for _, segment in ipairs(player.segments) do
       segment:draw()
@@ -103,6 +109,6 @@ local create_player       = function()
   return player
 end
 
-local player              = create_player()
+local player          = create_player()
 
 return player
