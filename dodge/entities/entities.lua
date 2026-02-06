@@ -15,7 +15,7 @@ local draw_spawners   = function()
       entity:draw()
     end
 
-    for _, spawned_entity in ipairs(entity.entities_to_spawn) do
+    for _, spawned_entity in ipairs(entity.spawned_entities) do
       if spawned_entity.draw then
         spawned_entity:draw()
       end
@@ -28,8 +28,11 @@ local update_spawners = function(dt)
     if entity.spawn then
       entity:spawn(dt)
     end
+    if entity.despawn then
+      entity:despawn()
+    end
 
-    for _, spawned_entity in ipairs(entity.entities_to_spawn) do
+    for _, spawned_entity in ipairs(entity.spawned_entities) do
       if spawned_entity.update then
         spawned_entity:update()
       end

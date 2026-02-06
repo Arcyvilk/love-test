@@ -7,7 +7,7 @@ local world = require 'world'
 return function(x_pos, y_pos, entity_to_spawn, spawn_delay)
   local entity = {
     radius = 2,
-    entities_to_spawn = {},
+    spawned_entities = {},
     spawn_delay = spawn_delay or 1
   }
 
@@ -23,7 +23,7 @@ return function(x_pos, y_pos, entity_to_spawn, spawn_delay)
     accumulated_delay = accumulated_delay + delta
 
     if accumulated_delay >= self.spawn_delay then
-      table.insert(self.entities_to_spawn, entity_to_spawn(x_pos, y_pos))
+      table.insert(self.spawned_entities, entity_to_spawn(x_pos, y_pos))
       accumulated_delay = 0
     end
   end
@@ -31,6 +31,14 @@ return function(x_pos, y_pos, entity_to_spawn, spawn_delay)
   entity.draw = function(self)
     local x_self, y_self = self.body:getWorldCenter()
     love.graphics.circle('fill', x_self, y_self, self.shape:getRadius())
+  end
+
+  entity.despawn = function(self)
+    for index, spawned_entity in ipairs(self.spawned_entities) do
+      if spawned_entity.age >= spawned_entity.ttl then
+        table.remove(self.spawned_entities, index)
+      end
+    end
   end
 
   return entity
