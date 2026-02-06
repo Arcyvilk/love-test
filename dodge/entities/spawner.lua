@@ -17,7 +17,6 @@ return function(x_pos, y_pos, entity_to_spawn, spawn_delay)
   entity.shape = love.physics.newCircleShape(entity.radius)
   entity.fixture = love.physics.newFixture(entity.body, entity.shape)
   entity.fixture:setSensor(true) -- disable collission
-  entity.fixture:setUserData(entity)
 
   entity.spawn = function(self, delta)
     accumulated_delay = accumulated_delay + delta
