@@ -4,13 +4,40 @@ local normalize           = require 'utils.normalize'
 
 local segment_radius_step = (vars.player_radius_max - vars.player_radius_min) / vars.player_segments
 
+local player              = {
+  head = {},
+  segments = {},
+  health_max = vars.player_segments,
+  health_current = vars.player_segments,
+  is_dead = false
+}
+
 local create_head         = function()
-  local head = {}
+  local head = {
+    name = "player_head"
+  }
   local target = {}
 
-  head.body = love.physics.newBody(world, vars.world_width / 2, vars.world_height / 2, 'kinematic')
+  head.body = love.physics.newBody(world, vars.world_width / 2, vars.world_height / 2, 'dynamic')
   head.shape = love.physics.newCircleShape(segment_radius_step * vars.player_segments)
   head.fixture = love.physics.newFixture(head.body, head.shape)
+
+  head.take_damage = function(self)
+    if player.is_dead then return end
+
+    player.health_current = player.health_current - 1
+    table.remove(player.segments, player.segments.size)
+
+    if player.health_current <= 0 then
+      head:die()
+    end
+  end
+
+  head.die = function(self)
+    player.is_dead = true
+  end
+
+  head.fixture:setUserData(head)
 
   head.update = function(self)
     local px, py = self.body:getPosition()
@@ -44,7 +71,6 @@ local create_segment      = function(index, prev_segment)
 
   segment.body = love.physics.newBody(world, vars.world_width / 2, vars.world_height / 2, 'kinematic')
   segment.shape = love.physics.newCircleShape(segment_radius_step * (vars.player_segments - index))
-  segment.fixture = love.physics.newFixture(segment.body, segment.shape)
 
   segment.update = function(self)
     local px, py = self.body:getPosition()
@@ -83,32 +109,22 @@ local create_segments = function(head)
   return segments
 end
 
-local create_player   = function()
-  local player    = {
-    head = {},
-    segments = {}
-  }
+player.head           = create_head()
+player.segments       = create_segments(player.head)
 
-  player.head     = create_head()
-  player.segments = create_segments(player.head)
-
-  player.update   = function(delta)
-    player.head:update()
-    for _, segment in ipairs(player.segments) do
-      segment:update(delta)
-    end
+player.update         = function(delta)
+  player.head:update()
+  for _, segment in ipairs(player.segments) do
+    segment:update(delta)
   end
-
-  player.draw     = function()
-    player.head:draw()
-    for _, segment in ipairs(player.segments) do
-      segment:draw()
-    end
-  end
-
-  return player
 end
 
-local player          = create_player()
+player.draw           = function()
+  player.head:draw()
+  for _, segment in ipairs(player.segments) do
+    segment:draw()
+  end
+end
+
 
 return player

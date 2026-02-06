@@ -1,14 +1,22 @@
 local world                          = require 'world'
 local input                          = require 'input'
 local player                         = require 'entities.player'
+local ui                             = require 'ui.ui'
+local death_screen                   = require 'ui.death_screen'
 local draw_spawners, update_spawners = unpack(require 'entities.entities')
 
 love.draw                            = function()
+  if player.is_dead then
+    death_screen.draw()
+  end
   player:draw()
+  ui.draw()
   draw_spawners()
 end
 
 love.update                          = function(dt)
+  if player.is_dead then return end
+
   player:update()
   update_spawners(dt)
 
