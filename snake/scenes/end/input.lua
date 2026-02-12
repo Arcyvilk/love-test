@@ -2,7 +2,7 @@ return function(scene_manager)
   local input = {
     escape = {
       release = function()
-        love.event.quit()
+        scene_manager:move_to("scene_home")
       end
     },
     space = {

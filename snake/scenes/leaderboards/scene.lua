@@ -2,6 +2,7 @@ local create_button = require 'ui.button'
 local create_scene  = require 'scenes.create_scene'
 local input         = require 'scenes.leaderboards.input'
 local center_text   = require 'utils.center_text'
+local fs            = require 'utils.fs'
 local vars          = require 'vars'
 
 local create_entry  = function(text, offset_y)
@@ -29,8 +30,7 @@ return function(scene_manager)
     create_entry("6. not you", 0),
     create_entry("7. not you", 20),
     create_entry("8. not you", 40),
-    create_entry("9. not you", 60),
-    create_entry("10. not you", 80)
+    create_entry("9. not you", 60)
   }
 
   local scene = create_scene({
@@ -38,7 +38,10 @@ return function(scene_manager)
 
     keybindings = input(scene_manager),
 
-    init = function() return end,
+    init = function()
+      local data = fs.read("data")
+      print(data)
+    end,
 
     mousepressed = function(self, x, y, mouse_button)
       for _, button in ipairs(buttons) do
