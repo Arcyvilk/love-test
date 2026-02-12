@@ -17,7 +17,7 @@ local scene_manager   = {
 }
 
 scene_manager.init    = function(self)
-  self.current_scene = self.scenes.scene_game
+  self.current_scene = self.scenes.scene_home
   print('Scene ' .. self.current_scene.name .. ' initialized!')
 end
 
