@@ -15,9 +15,9 @@ local player              = {
 local create_head         = function()
   local head = {
     name = "player_head",
+    state = "vulnerable",
     recovery_timer = 0,
-    recovery_delay = vars.player_recovery_time,
-    state = "vulnerable"
+    recovery_delay = vars.player_recovery_time
   }
   local target = {}
 
@@ -65,11 +65,18 @@ local create_head         = function()
 
   head.draw_state = function(self, x, y)
     if self.state == 'invulnerable' then
-      love.graphics.setColor(1, 0, 0, 0.5)
-    end
+      love.graphics.setColor(1, 0, 0, 1)
+      love.graphics.circle('fill', x, y, self.shape:getRadius())
 
-    love.graphics.circle('fill', x, y, self.shape:getRadius())
-    love.graphics.setColor(1, 1, 1, 1)
+      local radius_percentage = self.recovery_timer / self.recovery_delay
+      local new_radius = self.shape:getRadius() * (radius_percentage)
+
+      love.graphics.setColor(1, 1, 1, 1)
+      love.graphics.circle('fill', x, y, new_radius)
+    else
+      love.graphics.setColor(1, 1, 1, 1)
+      love.graphics.circle('fill', x, y, self.shape:getRadius())
+    end
   end
 
   head.update = function(self, delta)
@@ -88,7 +95,7 @@ local create_head         = function()
       vy * distance_factor.y * vars.player_base_speed)
   end
 
-  head.draw = function(self, delta)
+  head.draw = function(self)
     local x, y = self.body:getPosition()
 
     self:draw_state(x, y)
@@ -152,9 +159,6 @@ local create_segments     = function(head)
   return segments
 end
 
-player.head               = create_head()
-player.segments           = create_segments(player.head)
-
 player.update             = function(self, delta)
   self.head:update(delta)
   for _, segment in ipairs(self.segments) do
@@ -162,11 +166,20 @@ player.update             = function(self, delta)
   end
 end
 
-player.draw               = function(self, delta)
-  self.head:draw(delta)
+player.draw               = function(self)
+  self.head:draw()
   for _, segment in ipairs(self.segments) do
     segment:draw()
   end
 end
+
+player.reset              = function(self)
+  self.head           = create_head()
+  self.segments       = create_segments(self.head)
+  self.health_current = vars.player_segments
+  self.is_dead        = false
+end
+
+player:reset()
 
 return player

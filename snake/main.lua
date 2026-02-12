@@ -5,8 +5,8 @@ love.load           = function()
   scene_manager:init()
 end
 
-love.draw           = function(delta)
-  scene_manager.current_scene:draw(delta)
+love.draw           = function()
+  scene_manager.current_scene:draw()
 end
 
 love.update         = function(delta)
