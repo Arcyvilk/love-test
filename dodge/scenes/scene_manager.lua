@@ -1,5 +1,5 @@
-local scene_state = function()
-  local state   = {
+local scene_manager = function()
+  local manager   = {
     scenes = {
       scene_home = require 'scenes.home',
       scene_game = require 'scenes.game',
@@ -8,15 +8,15 @@ local scene_state = function()
     current_scene = nil
   }
 
-  state.init    = function(self)
+  manager.init    = function(self)
     self.current_scene = self.scenes.scene_home
   end
 
-  state.move_to = function(self, scene_name)
+  manager.move_to = function(self, scene_name)
     self.current_scene = self.scenes[scene_name]
   end
 
-  return state
+  return manager
 end
 
-return scene_state
+return scene_manager
