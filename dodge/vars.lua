@@ -8,7 +8,7 @@ local vars = {
   player_radius_min = 10,
   player_radius_max = 25,
   player_base_speed = 500,
-  player_segments = 25,
+  player_segments = 10,
   player_recovery_time = 0.5, -- seconds
 
   spawner_offset_x = 20,
@@ -16,8 +16,8 @@ local vars = {
 
   arrow_height = 50,
   arrow_width = 1,
-  arrow_base_speed = 750,
-  arrow_spawn_delay = 0.25
+  arrow_base_speed = 1000,
+  arrow_spawn_delay = 0.5
 }
 
 return vars
