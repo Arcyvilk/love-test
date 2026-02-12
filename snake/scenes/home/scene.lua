@@ -6,8 +6,10 @@ local vars          = require 'vars'
 
 return function(scene_manager)
   local buttons = {
-    create_button("Start", 0, 40, 160, 40, function() scene_manager:move_to('scene_game') end),
-    create_button("Exit", 0, 100, 160, 40, function() love.event.quit() end)
+    create_button("Start", 0, 0, 160, 40, function() scene_manager:move_to('scene_game') end),
+    create_button("Leaderboards", 0, 60, 160, 40, function() scene_manager:move_to('scene_leaderboards') end),
+    create_button("Settings", 0, 120, 160, 40, function() scene_manager:move_to('scene_settings') end),
+    create_button("Exit", 0, 180, 160, 40, function() love.event.quit() end)
   }
 
   local scene   = create_scene({
@@ -27,7 +29,7 @@ return function(scene_manager)
         size = 72,
         color = { 0.5, 0.7, 0.98, 1 },
         offset_x = 0,
-        offset_y = -100,
+        offset_y = -140,
         parent = { x = 0, y = 0, width = vars.world_width, height = vars.world_height }
       })
 

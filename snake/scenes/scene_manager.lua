@@ -13,9 +13,11 @@ scene_manager.current_scene = nil
 
 ---@type table { [key]: Scene }
 scene_manager.scenes        = {
-  scene_home = require 'scenes.home.scene' (scene_manager),
-  scene_game = require 'scenes.game.scene' (scene_manager),
-  scene_end  = require 'scenes.end.scene' (scene_manager)
+  scene_home         = require 'scenes.home.scene' (scene_manager),
+  scene_game         = require 'scenes.game.scene' (scene_manager),
+  scene_settings     = require 'scenes.settings.scene' (scene_manager),
+  scene_leaderboards = require 'scenes.leaderboards.scene' (scene_manager),
+  scene_end          = require 'scenes.end.scene' (scene_manager)
 }
 
 scene_manager.init          = function(self)
