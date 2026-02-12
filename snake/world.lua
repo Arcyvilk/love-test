@@ -12,7 +12,10 @@ local begin_contact_callback = function(fixture_a, fixture_b, contact)
   local head = get_entity_by_name('player_head', entity_a, entity_b)
   local arrow = get_entity_by_name('arrow', entity_a, entity_b)
 
-  if head and arrow then head:take_damage() end
+  if head and arrow then
+    head:take_damage()
+    arrow:mark_as_assassin()
+  end
 end
 
 local end_contact_callback   = function(fixture_a, fixture_b, contact)
