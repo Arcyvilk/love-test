@@ -1,7 +1,8 @@
 ---@class SceneArgs
 ---@field name string
 ---@field keybindings table
----@field draw fun(self: table, delta: number)
+---@field init fun(self: table)
+---@field draw fun(self: table)
 ---@field update fun(self: table, delta: number)
 ---@field mousepressed fun(self: table, x: number, y: number, button: number)
 
@@ -9,6 +10,7 @@
 local create_scene = function(args)
   local scene = {}
 
+  scene.init = args.init
   scene.name = args.name
   scene.draw = args.draw
   scene.update = args.update

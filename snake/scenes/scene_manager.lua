@@ -1,5 +1,6 @@
 ---@class Scene
 ---@field name string
+---@field init fun(self: table)
 ---@field draw fun(self: table, delta: number)
 ---@field update fun(self: table, delta: number)
 ---@field keypressed fun(self: table, key: string)
@@ -27,6 +28,7 @@ end
 
 scene_manager.move_to       = function(self, scene_name)
   self.current_scene = self.scenes[scene_name]
+  self.current_scene:init()
   print('Moved to ' .. self.current_scene.name .. ' scene!')
 end
 

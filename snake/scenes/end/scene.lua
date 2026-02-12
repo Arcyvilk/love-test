@@ -15,6 +15,9 @@ return function(scene_manager)
 
     keybindings = input(scene_manager),
 
+    init = function() return end,
+
+
     mousepressed = function(self, x, y, mouse_button)
       for _, button in ipairs(buttons) do
         button:click(x, y, mouse_button)
