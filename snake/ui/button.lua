@@ -6,14 +6,16 @@ local vars          = require 'vars'
 ---@param offset_y number
 ---@param width number
 ---@param height number
-local create_button = function(label, offset_x, offset_y, width, height)
+---@param on_click function
+local create_button = function(label, offset_x, offset_y, width, height, on_click)
   local button = {
     label = label,
     x = vars.world_width / 2 - width / 2 + offset_x,
     y = vars.world_height / 2 - height / 2 + offset_y,
     width = width,
     height = height,
-    is_hovered = false
+    is_hovered = false,
+    on_click = on_click
   }
 
   button.check_hover = function(self)
@@ -27,6 +29,12 @@ local create_button = function(label, offset_x, offset_y, width, height)
     end
 
     self.is_hovered = false
+  end
+
+  button.click = function(self, x, y, mouse_button)
+    if self.is_hovered then
+      self:on_click()
+    end
   end
 
   button.update = function(self)

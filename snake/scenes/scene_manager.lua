@@ -1,9 +1,10 @@
 ---@class Scene
 ---@field name string
----@field draw fun(self: table, dt:number)
----@field update fun(self: table, dt:number)
+---@field draw fun(self: table, delta: number)
+---@field update fun(self: table, delta: number)
 ---@field keypressed fun(self: table, key: string)
 ---@field keyreleased fun(self: table, key: string)
+---@field mousepressed fun(self: table, x: number, y: number, button: number)
 
 local scene_manager   = {
   ---@type Scene

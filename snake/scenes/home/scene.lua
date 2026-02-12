@@ -5,14 +5,20 @@ local center_text   = require 'utils.center_text'
 local vars          = require 'vars'
 
 local buttons       = {
-  create_button("Start", 0, 40, 160, 40),
-  create_button("Exit", 0, 100, 160, 40)
+  create_button("Start", 0, 40, 160, 40, function() print('start') end),
+  create_button("Exit", 0, 100, 160, 40, function() print('end') end)
 }
 
 local scene         = create_scene({
   name = 'scene_home',
 
   keybindings = input,
+
+  mousepressed = function(self, x, y, mouse_button)
+    for _, button in ipairs(buttons) do
+      button:click(x, y, mouse_button)
+    end
+  end,
 
   draw = function(self, delta)
     center_text({

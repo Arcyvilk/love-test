@@ -21,3 +21,7 @@ end
 love.keyreleased    = function(key)
   scene_manager.current_scene:keyreleased(key)
 end
+
+love.mousepressed   = function(x, y, button)
+  scene_manager.current_scene:mousepressed(x, y, button)
+end

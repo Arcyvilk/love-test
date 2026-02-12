@@ -6,6 +6,10 @@ local scene        = create_scene({
 
   keybindings = input,
 
+  mousepressed = function(self, x, y, mouse_button)
+    return
+  end,
+
   draw = function(self, delta)
     return
   end,
