@@ -5,11 +5,12 @@ local ui                             = require 'ui.ui'
 local death_screen                   = require 'ui.death_screen'
 local draw_spawners, update_spawners = unpack(require 'entities.entities')
 
-love.draw                            = function()
+love.draw                            = function(dt)
   if player.is_dead then
     death_screen.draw()
   end
-  player:draw()
+
+  player:draw(dt)
   ui.draw()
   draw_spawners()
 end
@@ -17,7 +18,7 @@ end
 love.update                          = function(dt)
   if player.is_dead then return end
 
-  player:update()
+  player:update(dt)
   update_spawners(dt)
 
   world:update(dt)

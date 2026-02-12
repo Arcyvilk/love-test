@@ -14,7 +14,10 @@ local player              = {
 
 local create_head         = function()
   local head = {
-    name = "player_head"
+    name = "player_head",
+    recovery_timer = 0,
+    recovery_delay = vars.player_recovery_time,
+    state = "vulnerable"
   }
   local target = {}
 
@@ -27,19 +30,51 @@ local create_head         = function()
 
     player.health_current = player.health_current - 1
     table.remove(player.segments, player.segments.size)
+    self:begin_recovery()
 
     if player.health_current <= 0 then
-      head:die()
+      self:die()
     end
+  end
+
+  head.begin_recovery = function(self)
+    self.fixture:setFilterData(1, 0, 0)
+    self.state = "invulnerable"
+  end
+
+  head.end_recovery = function(self)
+    self.fixture:setFilterData(1, 65535, 0)
+    self.state = "vulnerable"
+    self.recovery_timer = 0
+    self.recovery_delay = vars.player_recovery_time
   end
 
   head.die = function(self)
     player.is_dead = true
   end
 
-  head.fixture:setUserData(head)
+  head.update_state = function(self, delta)
+    if self.state == 'vulnerable' then return end
 
-  head.update = function(self)
+    self.recovery_timer = self.recovery_timer + delta
+
+    if self.recovery_timer >= self.recovery_delay then
+      self:end_recovery()
+    end
+  end
+
+  head.draw_state = function(self, x, y)
+    if self.state == 'invulnerable' then
+      love.graphics.setColor(1, 0, 0, 0.5)
+    end
+
+    love.graphics.circle('fill', x, y, self.shape:getRadius())
+    love.graphics.setColor(1, 1, 1, 1)
+  end
+
+  head.update = function(self, delta)
+    head:update_state(delta)
+
     local px, py = self.body:getPosition()
 
     target.x, target.y = love.mouse.getPosition()
@@ -53,20 +88,26 @@ local create_head         = function()
       vy * distance_factor.y * vars.player_base_speed)
   end
 
-  head.draw = function(self)
+  head.draw = function(self, delta)
     local x, y = self.body:getPosition()
-    love.graphics.circle('fill', x, y, self.shape:getRadius())
+
+    self:draw_state(x, y)
+
     love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.line(x, y, target.x, target.y)
     love.graphics.setColor(1, 1, 1, 1)
   end
+
+  head.fixture:setUserData(head)
 
   return head
 end
 
 --- @param index number
 local create_segment      = function(index, prev_segment)
-  local segment = {}
+  local segment = {
+    name = "player_segment_" .. index
+  }
   local target = {}
 
   segment.body = love.physics.newBody(world, vars.world_width / 2, vars.world_height / 2, 'kinematic')
@@ -96,36 +137,36 @@ local create_segment      = function(index, prev_segment)
   return segment
 end
 
-
-local create_segments = function(head)
+local create_segments     = function(head)
   local segments = {}
   local index = 1
+  local prev_segment = head
 
   while index < vars.player_segments do
-    local prev_segment = index == 1 and head or segments[index - 1]
-    table.insert(segments, create_segment(index, prev_segment))
+    local new_segment = create_segment(index, prev_segment)
+    table.insert(segments, new_segment)
+    prev_segment = new_segment
     index = index + 1
   end
 
   return segments
 end
 
-player.head           = create_head()
-player.segments       = create_segments(player.head)
+player.head               = create_head()
+player.segments           = create_segments(player.head)
 
-player.update         = function(delta)
-  player.head:update()
-  for _, segment in ipairs(player.segments) do
+player.update             = function(self, delta)
+  self.head:update(delta)
+  for _, segment in ipairs(self.segments) do
     segment:update(delta)
   end
 end
 
-player.draw           = function()
-  player.head:draw()
-  for _, segment in ipairs(player.segments) do
+player.draw               = function(self, delta)
+  self.head:draw(delta)
+  for _, segment in ipairs(self.segments) do
     segment:draw()
   end
 end
-
 
 return player
