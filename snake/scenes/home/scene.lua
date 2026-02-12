@@ -40,7 +40,7 @@ return function(scene_manager)
       end
     end,
 
-    update = function(self, delta)
+    update = function(self)
       for _, button in ipairs(buttons) do
         button:update()
       end

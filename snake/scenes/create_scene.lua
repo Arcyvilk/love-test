@@ -3,7 +3,7 @@
 ---@field keybindings table
 ---@field init fun(self: table)
 ---@field draw fun(self: table)
----@field update fun(self: table, delta: number)
+---@field update fun(self: table)
 ---@field mousepressed fun(self: table, x: number, y: number, button: number)
 
 ---@param args SceneArgs

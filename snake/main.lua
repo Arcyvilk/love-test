@@ -10,7 +10,7 @@ love.draw           = function()
 end
 
 love.update         = function(delta)
-  scene_manager.current_scene:update(delta)
+  scene_manager.current_scene:update()
   world:update(delta)
 end
 
