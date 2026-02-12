@@ -11,8 +11,8 @@ local spawners        = {
 }
 
 local init_spawners   = function()
-  for _, spawner_entity in ipairs(spawners) do
-    spawner_entity:reset()
+  for _, entity in ipairs(spawners) do
+    entity:reset()
   end
 end
 
@@ -31,11 +31,9 @@ local draw_spawners   = function()
 end
 
 local update_spawners = function()
-  local delta = love.timer.getDelta()
-
   for _, entity in ipairs(spawners) do
     if entity.spawn then
-      entity:spawn(delta)
+      entity:spawn()
     end
     if entity.despawn then
       entity:despawn()

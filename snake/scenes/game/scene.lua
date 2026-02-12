@@ -2,7 +2,7 @@ local input                                         = require 'scenes.game.input
 local create_scene                                  = require 'scenes.create_scene'
 local player                                        = require 'entities.player'
 local status_bar                                    = require 'ui.status_bar'
-local draw_spawners, update_spawners, init_spawners = unpack(require 'entities.entities')
+local init_spawners, draw_spawners, update_spawners = unpack(require 'entities.entities')
 
 return function(scene_manager)
   local scene = create_scene({
