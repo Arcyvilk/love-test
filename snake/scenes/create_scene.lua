@@ -16,15 +16,15 @@ local create_scene = function(args)
 
   ---@type fun(self: table, key:string)
   scene.keypressed = function(self, key)
-    if args.keybindings[key] then
+    if args.keybindings[key] and args.keybindings[key].press then
       args.keybindings[key]:press()
     end
   end
 
   ---@type fun(self: table, key:string)
   scene.keyreleased = function(self, key)
-    if args.keybindings[key] then
-      args.keybindings[key]:press()
+    if args.keybindings[key] and args.keybindings[key].release then
+      args.keybindings[key]:release()
     end
   end
 

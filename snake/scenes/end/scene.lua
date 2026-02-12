@@ -5,7 +5,7 @@ return function(scene_manager)
   local scene = create_scene({
     name = 'scene_end',
 
-    keybindings = input,
+    keybindings = input(scene_manager),
 
     mousepressed = function(self, x, y, mouse_button)
       return

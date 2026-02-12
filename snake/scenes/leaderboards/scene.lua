@@ -1,6 +1,6 @@
 local create_button = require 'ui.button'
 local create_scene  = require 'scenes.create_scene'
-local input         = require 'scenes.end.input'
+local input         = require 'scenes.leaderboards.input'
 local center_text   = require 'utils.center_text'
 local vars          = require 'vars'
 
@@ -36,7 +36,7 @@ return function(scene_manager)
   local scene = create_scene({
     name = 'scene_leaderboards',
 
-    keybindings = input,
+    keybindings = input(scene_manager),
 
     mousepressed = function(self, x, y, mouse_button)
       for _, button in ipairs(buttons) do
