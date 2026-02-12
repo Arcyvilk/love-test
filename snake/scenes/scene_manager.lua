@@ -23,6 +23,7 @@ end
 
 scene_manager.move_to = function(self, scene_name)
   self.current_scene = self.scenes[scene_name]
+  print('Moved to ' .. self.current_scene.name .. ' scene!')
 end
 
 return scene_manager
