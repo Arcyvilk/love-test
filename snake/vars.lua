@@ -9,7 +9,7 @@ local vars = {
   player_radius_max = 25,
   player_base_speed = 500,
   player_segments = 10,
-  player_recovery_time = 0.5, -- seconds
+  player_recovery_time = 1, -- seconds
 
   spawner_offset_x = 20,
   spawner_offset_y = 20,
