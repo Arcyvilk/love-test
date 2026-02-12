@@ -167,7 +167,7 @@ end
 player.calculate_score = function(self)
   if self.state == 'invulnerable' then return end
 
-  local delta = love.timer.getDelta()
+  local delta = math.floor(love.timer.getDelta() * 100)
   self.score = self.score + self.health_current * delta
 end
 
