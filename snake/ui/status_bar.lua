@@ -6,7 +6,7 @@ local entity      = {}
 
 function entity.draw()
   center_text({
-    text = string.format('Health: %.1f', player.health_current),
+    text = string.format('Score: %.1f', player.score),
     size = 12,
     color = { 1, 0, 0, 1 },
     offset_x = 0,

@@ -9,13 +9,15 @@ local player              = {
   segments = {},
   health_max = vars.player_segments,
   health_current = vars.player_segments,
-  is_dead = false
+  state = "vulnerable",
+  is_dead = false,
+  timer = 0,
+  score = 0
 }
 
 local create_head         = function()
   local head = {
     name = "player_head",
-    state = "vulnerable",
     recovery_timer = 0,
     recovery_delay = vars.player_recovery_time
   }
@@ -39,12 +41,12 @@ local create_head         = function()
 
   head.begin_recovery = function(self)
     self.fixture:setFilterData(1, 0, 0)
-    self.state = "invulnerable"
+    player.state = "invulnerable"
   end
 
   head.end_recovery = function(self)
     self.fixture:setFilterData(1, 65535, 0)
-    self.state = "vulnerable"
+    player.state = "vulnerable"
     self.recovery_timer = 0
     self.recovery_delay = vars.player_recovery_time
   end
@@ -53,8 +55,10 @@ local create_head         = function()
     player.is_dead = true
   end
 
-  head.update_state = function(self, delta)
-    if self.state == 'vulnerable' then return end
+  head.update_state = function(self)
+    local delta = love.timer.getDelta()
+
+    if player.state == 'vulnerable' then return end
 
     self.recovery_timer = self.recovery_timer + delta
 
@@ -64,7 +68,7 @@ local create_head         = function()
   end
 
   head.draw_state = function(self, x, y)
-    if self.state == 'invulnerable' then
+    if player.state == 'invulnerable' then
       love.graphics.setColor(1, 0, 0, 1)
       love.graphics.circle('fill', x, y, self.shape:getRadius())
 
@@ -79,8 +83,8 @@ local create_head         = function()
     end
   end
 
-  head.update = function(self, delta)
-    head:update_state(delta)
+  head.update = function(self)
+    head:update_state()
 
     local px, py = self.body:getPosition()
 
@@ -159,25 +163,38 @@ local create_segments     = function(head)
   return segments
 end
 
-player.update             = function(self, delta)
-  self.head:update(delta)
+
+player.calculate_score = function(self)
+  if self.state == 'invulnerable' then return end
+
+  local delta = love.timer.getDelta()
+  self.score = self.score + self.health_current * delta
+end
+
+player.update          = function(self)
+  self.head:update()
+  self:calculate_score()
+
   for _, segment in ipairs(self.segments) do
-    segment:update(delta)
+    segment:update()
   end
 end
 
-player.draw               = function(self)
+player.draw            = function(self)
   self.head:draw()
   for _, segment in ipairs(self.segments) do
     segment:draw()
   end
 end
 
-player.reset              = function(self)
+player.reset           = function(self)
   self.head           = create_head()
   self.segments       = create_segments(self.head)
   self.health_current = vars.player_segments
   self.is_dead        = false
+  self.timer          = 0
+  self.score          = 0
+  self.state          = 'vulnerable'
 end
 
 player:reset()
