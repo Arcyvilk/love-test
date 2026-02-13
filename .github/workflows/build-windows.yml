@@ -12,13 +12,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Copy files to root
+        shell: bash
+        run: |
+          cp -r ./snake/* ./
+
       - name: Built .love package
         uses: love-actions/love-actions-core@v1
         with:
-          build-list: ./snake
+          build-list: ./
           package-path: ./SNEK.love
-          product-name: SNEK
-          output-folder: "./"
 
       - name: Build Windows executable
         uses: love-actions/love-actions-windows@v1.1.3
