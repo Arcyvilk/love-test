@@ -42,6 +42,7 @@ return function(x_pos, y_pos, entity_to_spawn, spawn_delay)
   entity.despawn = function(self)
     for index, spawned_entity in ipairs(self.spawned_entities) do
       if spawned_entity.age >= spawned_entity.ttl then
+        spawned_entity:despawn()
         table.remove(self.spawned_entities, index)
       end
     end

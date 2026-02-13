@@ -21,8 +21,7 @@ return function(x_pos, y_pos)
   }
 
   entity.body    = love.physics.newBody(world, x_pos, y_pos, 'kinematic')
-  entity.shape   = love.physics.newRectangleShape(x_pos, y_pos, vars.arrow_width, vars.arrow_height,
-    entity.angle)
+  entity.shape   = love.physics.newEdgeShape(0, 0, vars.arrow_width, vars.arrow_height)
   entity.fixture = love.physics.newFixture(entity.body, entity.shape)
   entity.fixture:setUserData(entity)
 
@@ -30,6 +29,7 @@ return function(x_pos, y_pos)
     local target_x, target_y = player.head.body:getPosition()
     local x_self, y_self     = self.body:getPosition()
     self.angle               = get_angle(x_self, y_self, target_x, target_y) - math.pi / 2
+    self.body:setTransform(x_self, y_self, self.angle)
   end
 
   entity.shoot            = function(self)
@@ -42,6 +42,10 @@ return function(x_pos, y_pos)
     self.is_assassin = true
   end
 
+  entity.despawn          = function(self)
+    self.body:destroy()
+  end
+
   entity.update           = function(self)
     if self.age >= self.preparation_time and not self.is_moving then
       self.target.x, self.target.y = player.head.body:getPosition()
@@ -51,10 +55,10 @@ return function(x_pos, y_pos)
     self.age = self.age + 1
 
     if self.is_moving then
-      if self.is_shot then return end
-
-      self.is_shot = true
-      self:shoot()
+      if not self.is_shot then
+        self.is_shot = true
+        self:shoot()
+      end
     else
       self:home()
     end
