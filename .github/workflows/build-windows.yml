@@ -15,10 +15,7 @@ jobs:
       - name: Built .love package
         uses: love-actions/love-actions-core@v1
         with:
-          build-list: |
-            ./snake/main.lua
-            ./snake/conf.lua
-            ./snake/*
+          build-list: ./snake
           package-path: ./SNEK.love
 
       - name: Build Windows executable
