@@ -24,18 +24,18 @@ jobs:
           love-package: ./SNEK.love
           # icon-path: ./assets/windows/icon.ico
           # rc-path: ../.luarc.json
-          product-name: snek
-          app-id: snek
-          # output-folder: "./dist"
+          product-name: SNEK
+          app-id: SNEK
+          output-folder: "./build"
 
       - name: Upload 64-bit artifact
         uses: actions/upload-artifact@v4
         with:
           name: SNEK_Windows_x64
-          path: ./SNEK_x64.zip
+          path: ./build/SNEK_x64.zip
 
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
         with:
           name: SNEK_Windows_installer
-          path: ./SNEK_installer.exe
+          path: ./build/SNEK_installer.exe
