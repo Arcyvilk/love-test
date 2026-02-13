@@ -16,7 +16,7 @@ local vars = {
 
   arrow_height = 50,
   arrow_width = 1,
-  arrow_base_speed = 200,
+  arrow_base_speed = 1000,
   arrow_spawn_delay = 0.5,
   arrow_preparation_time = 60,
   arrow_ttl = 180,
