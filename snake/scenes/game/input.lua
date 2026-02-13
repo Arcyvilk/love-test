@@ -1,3 +1,5 @@
+local dev = require 'dev'
+
 return function(scene_manager)
   local input = {
     escape = {
@@ -7,7 +9,7 @@ return function(scene_manager)
     },
     space = {
       press = function()
-        debug.debug()
+        dev.debug = not dev.debug
       end
     }
   }

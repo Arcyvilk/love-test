@@ -1,6 +1,7 @@
 local world         = require 'world'
 local fonts         = require '_assets.fonts.fonts'
 local scene_manager = require 'scenes.scene_manager'
+local dev           = require 'dev'
 
 love.load           = function()
   fonts:load()
@@ -9,6 +10,9 @@ end
 
 love.draw           = function()
   scene_manager.current_scene:draw()
+  if dev.debug then
+    dev.draw_physics()
+  end
 end
 
 love.update         = function(delta)
