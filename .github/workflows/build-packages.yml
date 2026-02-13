@@ -12,12 +12,12 @@ jobs:
       - name: Built .love package
         uses: love-actions/love-actions-core@v1
         with:
-          build-list: ../../snake
-          package-path: ../../SNEK.love
+          build-list: ./snake/
+          package-path: ./SNEK.love
       - name: Build Windows executable
         uses: love-actions/love-actions-windows@v1.1.3
         with:
-          love-package: ../../SNEK.love
+          love-package: ./SNEK.love
           # icon-path: ./assets/windows/icon.ico
           # rc-path: ../.luarc.json
           product-name: snek
@@ -27,9 +27,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SNEK_Windows_x64
-          path: ../../SNEK_x64.zip
+          path: ./SNEK_x64.zip
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
         with:
           name: SNEK_Windows_installer
-          path: ../../SNEK_installer.exe
+          path: ./SNEK_installer.exe
