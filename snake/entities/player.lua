@@ -31,7 +31,12 @@ local create_head         = function()
     if player.is_dead then return end
 
     player.health_current = player.health_current - 1
-    table.remove(player.segments, player.segments.size)
+    if player.segments[player.health_current] then
+      player.segments[player.health_current].body:destroy()
+    end
+
+    table.remove(player.segments, player.health_current)
+
     self:begin_recovery()
 
     if player.health_current <= 0 then
