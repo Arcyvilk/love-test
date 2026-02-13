@@ -1,6 +1,8 @@
+local fonts       = require '_assets.fonts.fonts'
+
 ---@class CenterTextArgs
 ---@field text string
----@field size number
+---@field size 's'|'m'|'l'|'xl'
 ---@field color table
 ---@field offset_x number
 ---@field offset_y number
@@ -8,9 +10,8 @@
 
 ---@param args CenterTextArgs
 local center_text = function(args)
-  love.graphics.setNewFont(args.size)
   love.graphics.setColor(args.color)
-
+  love.graphics.setFont(fonts[args.size])
   local font = love.graphics.getFont()
   font:setFilter("nearest", "nearest")
 
@@ -23,7 +24,7 @@ local center_text = function(args)
     args.parent.y + args.parent.height / 2 - text_height / 2 + args.offset_y
   )
 
-  love.graphics.setNewFont(12)    -- reset font to default
+  love.graphics.setFont(fonts.s)  -- reset font to default
   love.graphics.setColor(1, 1, 1) -- reset color to default
 end
 
