@@ -193,6 +193,10 @@ player.draw            = function(self)
 end
 
 player.reset           = function(self)
+  for _, segment in ipairs(self.segments) do
+    if segment.body then segment.body:destroy() end
+  end
+
   self.head           = create_head()
   self.segments       = create_segments(self.head)
   self.health_current = vars.player_segments
@@ -201,7 +205,5 @@ player.reset           = function(self)
   self.score          = 0
   self.state          = 'vulnerable'
 end
-
-player:reset()
 
 return player

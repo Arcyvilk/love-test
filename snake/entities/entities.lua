@@ -5,6 +5,14 @@ local arrow           = require 'entities.arrow'
 local spawners        = {}
 
 local reset_spawners  = function()
+  for _, spawner_entity in ipairs(spawners) do
+    if spawner_entity.body then spawner_entity.body:destroy() end
+    if not spawner_entity.spawned_entities then return end
+    for _, spawned_entity in ipairs(spawner_entity.spawned_entities) do
+      if spawned_entity.body then spawned_entity.body:destroy() end
+    end
+  end
+
   spawners = {
     spawner(vars.spawner_offset_x, vars.spawner_offset_y, arrow, vars.arrow_spawn_delay),
     spawner(vars.world_width - vars.spawner_offset_x, vars.spawner_offset_y, arrow, vars.arrow_spawn_delay),
