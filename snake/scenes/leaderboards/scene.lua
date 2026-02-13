@@ -21,17 +21,7 @@ return function(scene_manager)
     create_button("Back", 0, vars.world_height / 2.4, 160, 40, function() scene_manager:move_to('scene_home') end)
   }
 
-  local entries = {
-    create_entry("1. not you", -100),
-    create_entry("2. not you", -80),
-    create_entry("3. not you", -60),
-    create_entry("4. not you", -40),
-    create_entry("5. not you", -20),
-    create_entry("6. not you", 0),
-    create_entry("7. not you", 20),
-    create_entry("8. not you", 40),
-    create_entry("9. not you", 60)
-  }
+  local entries = {}
 
   local scene = create_scene({
     name = 'scene_leaderboards',
@@ -39,8 +29,27 @@ return function(scene_manager)
     keybindings = input(scene_manager),
 
     init = function()
-      local data = fs.read("data")
-      print(data)
+      entries = {}
+      local leaderboards = {}
+      local data_str = fs.read(vars.save_file_name)
+
+      string.gsub(data_str, "[^|]+", function(row)
+        local entry = {}
+        string.gsub(row, "[^,]+", function(data)
+          table.insert(entry, data)
+        end)
+        table.insert(leaderboards, entry)
+      end)
+
+      table.sort(leaderboards, function(a, b) return tonumber(a[1]) > tonumber(b[1]) end)
+
+      for index, entry in ipairs(leaderboards) do
+        if index > 10 then return end
+
+        local score = entry[1]
+        local user = entry[2] == 'true' and 'you' or 'not you'
+        table.insert(entries, create_entry(score .. " - " .. user, -140 + index * 20))
+      end
     end,
 
     mousepressed = function(self, x, y, mouse_button)
@@ -62,6 +71,7 @@ return function(scene_manager)
       for _, button in ipairs(buttons) do
         button:draw()
       end
+
       for _, entry in ipairs(entries) do
         center_text(entry)
       end

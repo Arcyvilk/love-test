@@ -11,8 +11,8 @@ return function(x_pos, y_pos)
     is_shot = false,
     is_assassin = false,
     angle = 0,
-    preparation_time = 60,
-    ttl = 180,
+    preparation_time = vars.arrow_preparation_time,
+    ttl = vars.arrow_ttl,
     age = 0,
     target = {
       x = 0,

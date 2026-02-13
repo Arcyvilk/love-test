@@ -18,11 +18,8 @@ return function(scene_manager)
     keybindings = input(scene_manager),
 
     init = function()
-      local final_score = {
-        is_player = true,
-        score = player.score
-      }
-      fs.write("data", final_score)
+      local final_score = { player.score, "true" }
+      fs.write(vars.save_file_name, final_score)
     end,
 
     mousepressed = function(self, x, y, mouse_button)
