@@ -17,6 +17,8 @@ jobs:
         with:
           build-list: ./snake
           package-path: ./SNEK.love
+          product-name: SNEK
+          output-folder: "./"
 
       - name: Build Windows executable
         uses: love-actions/love-actions-windows@v1.1.3
