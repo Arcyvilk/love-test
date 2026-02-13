@@ -19,7 +19,7 @@ jobs:
           package-path: ./SNEK.love
 
       - name: Build MacOS binary
-        uses: love-action/love-actions-macos-portable@v1
+        uses: love-action/love-actions-macos-portable@v1.1.2
         with:
           love-package: ./SNEK.love
           product-name: SNEK
