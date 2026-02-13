@@ -7,7 +7,7 @@ local entity      = {}
 function entity.draw()
   center_text({
     text = string.format('Score: %.1f', player.score),
-    size = 12,
+    size = 'm',
     color = { 1, 0, 0, 1 },
     offset_x = 0,
     offset_y = vars.world_height / -2.1,

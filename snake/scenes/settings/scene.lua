@@ -6,7 +6,8 @@ local vars          = require 'vars'
 
 return function(scene_manager)
   local buttons = {
-    create_button("Back", 0, vars.world_height / 2.4, 160, 40, function() scene_manager:move_to('scene_home') end)
+    create_button("Back", 0, vars.world_height / 2.4, vars.button_width, vars.button_height,
+      function() scene_manager:move_to('scene_home') end)
   }
 
   local scene = create_scene({
@@ -25,7 +26,7 @@ return function(scene_manager)
     draw = function(self)
       center_text({
         text = "SETTINGS",
-        size = 32,
+        size = 'l',
         color = { 0.5, 0.7, 0.98, 1 },
         offset_x = 0,
         offset_y = vars.world_height / -2.4,

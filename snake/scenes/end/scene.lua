@@ -8,8 +8,10 @@ local vars          = require 'vars'
 
 return function(scene_manager)
   local buttons = {
-    create_button("Try again", 0, 120, 160, 40, function() scene_manager:move_to('scene_game') end),
-    create_button("Back to title", 0, 180, 160, 40, function() scene_manager:move_to('scene_home') end)
+    create_button("Try again", 0, 120, vars.button_width, vars.button_height,
+      function() scene_manager:move_to('scene_game') end),
+    create_button("Back to title", 0, 180, vars.button_width, vars.button_height,
+      function() scene_manager:move_to('scene_home') end)
   }
 
   local scene   = create_scene({
@@ -31,7 +33,7 @@ return function(scene_manager)
     draw = function(self)
       center_text({
         text = "YOU LOST",
-        size = 72,
+        size = 'xl',
         color = { 0.5, 0.7, 0.98, 1 },
         offset_x = 0,
         offset_y = -140,
@@ -40,7 +42,7 @@ return function(scene_manager)
 
       center_text({
         text = "Final score: " .. player.score,
-        size = 32,
+        size = 'l',
         color = { 1, 1, 1, 1 },
         offset_x = 0,
         offset_y = 0,

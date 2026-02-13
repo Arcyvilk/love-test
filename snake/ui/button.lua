@@ -53,7 +53,7 @@ local create_button = function(label, offset_x, offset_y, width, height, on_clic
 
     center_text({
       text = self.label,
-      size = 20,
+      size = 'm',
       color = { 0, 0, 0, 1 },
       offset_x = 0,
       offset_y = 0,

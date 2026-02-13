@@ -21,7 +21,10 @@ local vars = {
   arrow_preparation_time = 60,
   arrow_ttl = 180,
 
-  save_file_name = "save_data.txt"
+  save_file_name = "save_data.txt",
+
+  button_width = 200,
+  button_height = 40
 }
 
 return vars
