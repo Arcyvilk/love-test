@@ -1,7 +1,9 @@
 local world         = require 'world'
+local fonts         = require '_assets.fonts.fonts'
 local scene_manager = require 'scenes.scene_manager'
 
 love.load           = function()
+  fonts:load()
   scene_manager:init()
 end
 
